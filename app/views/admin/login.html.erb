@@ -1,0 +1,39 @@
+
+<div class="container-admin">
+	<div class="screen">
+		<div class="screen__content">
+        <%= form_with url:"/admin/login", :html => {:class => 'login'}, method: :post do |form| %>
+            <h1>Manager Login</h1>
+				<div class="login__field">
+					<i class="login__icon fas fa-user"></i>
+                    <%= form.text_field :username, placeholder: 'Username', class: 'login__input pl-4' %>
+				</div>
+				<div class="login__field">
+					<i class="login__icon fas fa-lock"></i>
+                    <%= form.password_field :password, placeholder: 'Password', class: 'login__input pl-4' %>
+				</div>
+				<button class="button login__submit">
+					<span class="button__text">Log In Now</span>
+					<i class="button__icon fas fa-chevron-right"></i>
+				</button>				
+                <% end %>
+			<div class="social-login">
+				<h3>log in via</h3>
+				<div class="social-icons">
+					<a href="https://www.instagram.com/accounts/login/" class="social-login__icon fab fa-instagram"></a>
+					<a href="https://www.facebook.com/" class="social-login__icon fab fa-facebook"></a>
+					<a href="https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoiZW4ifQ%3D%3D%22%7D" class="social-login__icon fab fa-twitter"></a>
+				</div>
+			</div>
+		</div>
+		<div class="screen__background">
+			<span class="screen__background__shape screen__background__shape4"></span>
+			<span class="screen__background__shape screen__background__shape3"></span>		
+			<span class="screen__background__shape screen__background__shape2"></span>
+			<span class="screen__background__shape screen__background__shape1"></span>
+		</div>		
+	</div>
+</div>
+<script>
+	document.body.style.background = 'linear-gradient(90deg, #C7C5F4, #776BCC)'
+</script>

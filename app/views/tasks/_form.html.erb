@@ -1,0 +1,81 @@
+
+<%= form_with(model: [@task.project, @task]) do |f| %>
+  <% if @task.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+
+      <ul>
+      <% @task.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, class: 'form-control', :required => true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %><br />
+    <%= f.text_area :description, class: 'form-control' %>
+  </div>
+
+  <%= f.hidden_field :empl, id:'empl-task' %>
+
+  <div class='custom-checkbox'>
+    <p>Employee</p>
+    <div class='select'>
+          <div class='placeholder' onclick='showcheckbox()'><span>Select Employee</span><span id='custom-i'><i class="fas fa-caret-down"></i></span></div>
+          <% @users.each do |user| %>
+            <div class='custom-option'><input type='checkbox' id=<%= user.id %> onchange='checkbox(this.id)'><span><%= user.name %></span></div>
+          <% end %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :start %><br />
+    <%= f.datetime_select :start, {}, class: 'm-1 p-1' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :end %><br />
+    <%= f.datetime_select :end, {}, class: 'm-1 p-1' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :status %><br />
+    <%= f.select :status, Task::STATUS_OPTIONS, {}, class: 'form-control' %>
+  </div>
+  <div class="actions text-center mt-4">
+    <%= f.submit class: "btn btn-primary rounded bg-secondary" %>
+  </div>
+<% end %>
+
+<script>
+
+  const checkboxex = document.getElementsByClassName('custom-option')
+  for(var i=0;i<checkboxex.length;i++){
+    if(document.getElementById('empl-task').value.includes(checkboxex[i].firstChild.id))checkboxex[i].firstChild.checked=true
+  }
+
+ function showcheckbox(){
+  if(document.getElementsByClassName('select')[0].style.height==''||document.getElementsByClassName('select')[0].style.height=='35px'){
+    document.getElementsByClassName('select')[0].style.height='min-content';
+    document.getElementById('custom-i').innerHTML='<i class="fas fa-caret-up"></i>'
+  }
+  else {
+    document.getElementsByClassName('select')[0].style.height='35px'
+    document.getElementById('custom-i').innerHTML='<i class="fas fa-caret-down"></i>'
+  }
+ }
+
+ function checkbox(id){
+  if(document.getElementById(id).checked){
+    document.getElementById('empl-task').value+=(id+'--')
+  }
+  else{
+    if(document.getElementById('empl-task').value.includes(id)){
+      document.getElementById('empl-task').value = document.getElementById('empl').value.replace((id+'--'),'')
+    }
+  }
+ }
+</script>

@@ -1,0 +1,12 @@
+// Place all the styles related to the Projects controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.task-form,.card-zoom{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    cursor: pointer;
+    transition-duration: 200ms;
+}
+.card-zoom:hover{
+    transform: scale(1.02);
+    background-color: #f7f7f7;
+}

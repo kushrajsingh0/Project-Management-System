@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Project Management</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+  <div class='nav-hidden-menu' id='nav-hidden'>
+      <a href='/home/index'>My Dashboard</a>
+      <%= link_to 'Edit profile', edit_user_registration_path %> 
+      <%= link_to "Logout", destroy_user_session_path, method: :delete  %>
+    </div>
+  
+    <% msg='' %>
+  <% case Time.now.strftime("%H").to_i %>
+  <% when 1..11 then msg="Morning" %>
+  <% when 12..16 then msg="Afternoon" %>
+  <% when 16..24 then msg="Evening" %>
+  <% else msg="Night" %>
+  <% end %>
+  
+  <div class='w-100 bg-dark d-flex text-white pr-3 justify-content-between align-items-center' id='nav-top'>
+    <% if user_signed_in? %>
+    <div>
+  <img src="/assets/logo1.jpeg" height='50px' width='50px' class='' >
+    <a class='nav-link-item p-3' href='/home/index'>Home</a>
+    </div>
+    <span>Good <%= msg+' '+current_user.name %></span>
+    <div class='d-flex align-items-center'>
+      <div class='div-user-search'>
+        <input type='text' name='user-search' class='user-search' placeholder='Search'>
+        <i class="fas fa-search mr-1 user-icon-login" onclick='openSearchBox()'></i>
+        <i class="fas fa-close mr-1 user-icon-login" id='user-search-empty' onclick='closeSearchBox()' style='display:none'></i>
+      </div>
+      <i class="fas fa-user mr-1 user-icon-login" onclick='hideMenu()'></i>
+    </div>
+  <% else %>
+  
+  <% if session[:admin].nil? %>
+  <div>
+  <img src="/assets/logo1.jpeg" height='50px' width='50px' class='' >
+  <a class='nav-link-item p-3' href='/users/sign_in'>Home</a>
+  </div>
+  <span>Project Management</span>
+  <div>
+    <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link text-white bg-info p-2 rounded mr-2'  %> 
+    <%= link_to "Login", new_user_session_path, :class => 'navbar-link text-white bg-info p-2 rounded'  %>
+    </div>
+  <% else %>
+  <div>
+  <img src="/assets/logo1.jpeg" height='50px' width='50px' class='' >
+  <a class='nav-link-item p-3' href='/projects'>Home</a>
+  </div>
+  <span>Project Management</span>
+  <div class='d-flex align-items-center'>
+    <div class='div-user-search'>
+          <input type='text' name='user-search' class='user-search' placeholder='Search'>
+          <i class="fas fa-search mr-1 user-icon-login" onclick='openSearchBox()'></i>
+          <i class="fas fa-close mr-1 user-icon-login" id='user-search-empty' onclick='closeSearchBox()' style='display:none'></i>
+        </div>
+    <%= link_to "Logout", admin_logout_path, :class => 'navbar-link text-white bg-info p-2 rounded'  %>
+  </div>
+  <% end %>
+  <% end %>
+    </div>
+
+    <div class="alert-box">
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
+
+    
+
+  
+      
+    </div>
+    
+    <%= yield %>
+
+
+
+    <script>
+      function hideMenu(){
+        if(document.getElementById('nav-hidden').style.display=='none'||document.getElementById('nav-hidden').style.display==''){
+          document.getElementById('nav-hidden').style.display='block'
+        }
+        else{
+          document.getElementById('nav-hidden').style.display='none'
+        }
+      }
+      function openSearchBox(){
+        if(document.getElementsByClassName('user-search')[0].style.display==''||document.getElementsByClassName('user-search')[0].style.display=='none'){
+          document.getElementsByClassName('div-user-search')[0].style.border = '1px solid rgb(253, 253, 253, 0.1)';
+          document.getElementsByClassName('user-search')[0].style.display = 'inline-block'
+          document.getElementById('user-search-empty').style.display='inline-block'
+          document.getElementsByClassName('user-search')[0].focus()
+        }
+        else{
+          var searchValue = document.getElementsByClassName('user-search')[0].value.toLowerCase()
+          if(searchValue.trim()=='')return;
+          var searchContent = document.getElementsByClassName('search-content')
+          var flag = true;
+          var id = '';
+          for(var i=0;i<searchContent.length;i++){
+            searchContent[i].style.backgroundColor='inherit';
+            if(searchContent[i].innerText.toLowerCase().includes(searchValue)){
+              searchContent[i].style.backgroundColor='yellow';
+              if(flag){
+                id = searchContent[i].id;
+                flag = false;
+              }
+            }
+          }
+          if(!flag){
+            window.location.href = `#${id}`;
+            window.scrollBy(0,-50)
+          }
+
+        }
+      }
+
+      function closeSearchBox(){
+        document.getElementsByClassName('div-user-search')[0].style.border = 'none';
+          document.getElementsByClassName('user-search')[0].style.display = 'none'
+          document.getElementById('user-search-empty').style.display='none'
+      }
+      
+    </script>
+       
+  </body>
+</html>

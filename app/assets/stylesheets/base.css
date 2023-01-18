@@ -1,0 +1,413 @@
+body {
+    background-color: #eeeeee;
+}
+
+
+.custom-checkbox{
+    margin-bottom: 16px;
+}
+.custom-checkbox p{
+    margin-right: 10px;
+    margin-bottom: 7px;
+}
+.custom-checkbox span{
+    margin: 2px;
+} 
+.select{
+    width: 100%;
+    height: 35px;
+    overflow: hidden;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+.placeholder{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+    padding: 5px;
+    color: rgb(0, 0, 0, 0.6);
+}
+.custom-checkbox input{
+    margin-right: 5px;
+}
+.custom-option{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.custom-option:hover{
+    background-color: #eeeeee;
+}
+
+.width-checkbox{
+    min-width: 100%;
+}
+.task-form textarea,.task-form input[type=text]{
+    min-width: 100%;
+}
+
+.proj_user{
+    margin: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.user-proj-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-proj h3,h4,h5{
+    font-weight: bold;
+}
+
+.user-proj h3{
+    padding: 20px 0 0 25px;
+}
+
+.user-proj-flex p{
+    font-size: small;
+    color: gray;
+}
+
+.user-proj-flex h6{
+    font-style: italic;
+    font-size: medium;
+    color: gray;
+}
+
+.user-proj-flex button,.btn-read-cmnt1{
+    background-color: blue;
+    border: 1px solid blue;
+    color: white;
+    padding: 5px 10px 5px 10px;
+    border-radius: 4px;
+}
+.btn-read-cmnt1{
+    font-size: 13px;
+    margin-top: 10px;
+}
+.user-proj-flex i{
+    margin-right: 4px;
+    font-size: small;
+}
+.user-proj-flex button:hover,.btn-read-cmnt1:hover{
+    background-color: white;
+    color: black;
+}
+.user-proj-flex button:focus{
+    outline: none;
+}
+
+.grid-cont{
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 10px;
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.grid-item{
+    background-color: aquamarine;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+.grid-item-flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-task-name{
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.user-task-date{
+    font-size: small;
+    color: gray;
+    margin-bottom: 2px;
+}
+.user-task-desc{
+    font-size: 16px;
+    font-style: italic;
+    color: blue;
+}
+
+.user-task-status{
+    background-color: white;
+    padding: 5px 8px 5px 8px;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    color: maroon;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 4px;
+    cursor: pointer;
+}
+.grid-item i{
+    padding: 7px 9px 7px 9px;
+}
+.div-textarea textarea{
+    width: 100%;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    padding: 2px;
+    resize: none;
+}
+.div-textarea{
+    display:none;
+    margin-top: 10px;
+}
+.div-textarea button{
+    background-color: gray;
+    border: 1px solid gray;
+    outline: none;
+    border-radius: 3px;
+    color: white;
+    font-size: small;
+    padding: 3px 8px 3px 8px;
+    float: right;
+    margin: 2px;
+}
+
+.div-textarea button:hover{
+    background-color: white;
+    color: black;
+}
+
+.comment-card{
+    background-color: lightskyblue;
+}
+.userNameComment{
+    font-weight: bold;
+    margin-right: 5px;
+}
+.dateComment{
+    font-size: small;
+    color: rgb(0, 0, 0, 0.5);
+}
+.comment-each{
+    background-color: white;
+    border-left: 5px solid blue;
+    border-radius: 5px;
+    margin-bottom: 6px;
+    padding: 5px;
+}
+
+.nav-link-item{
+    color: white;
+}
+.nav-link-item:hover{
+    background-color: black;
+    text-decoration: none;
+    color: white;
+}
+.user-icon-login{
+    font-size: large;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.user-icon-login:hover{
+    background-color: black;
+}
+.nav-org{
+    position: fixed;
+}
+.nav-hidden-menu{
+    position: fixed;
+    top: 60px;
+    right: 28px;
+    background-color: white;
+    border-radius: 7px;
+    z-index: 1;
+    display: none;
+}
+.nav-hidden-menu a{
+    padding: 12px 15px 12px 15px;
+    color: black;
+    display: block;
+    border-bottom: 1px solid #f2f2f2;
+}
+.nav-hidden-menu a:hover{
+    text-decoration: none;
+    background-color: #f2f2f2;
+}
+
+.sidebar-hidden,.sidebar-hidden-comment{
+    width: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    background-color: black;
+    height: 100%;
+    transition-duration: 200ms;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+}
+.sidebar-hidden-comment-1{
+    display: none;
+}
+.sidebar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  .sidebar-hidden-comment::-webkit-scrollbar{
+    display: none;
+  }
+
+.sidebar-hidden p{
+    padding: 10px;
+    margin: 0;
+    border-bottom: 1px solid rgb(255, 255, 255, 0.3);
+    color: white;
+}
+
+.side-title{
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(255, 255, 255, 0.1);
+    align-items: center;
+    padding: 10px;
+    font-size: large;
+    color: white;
+}
+.side-title i{
+    font-size: x-large;
+    cursor: pointer;
+}
+.side-title i:hover{
+    opacity: 70%;
+}
+.side-body{
+    text-align: center;
+    color: white;
+    font-size: large;
+    padding: 20px 0 20px 0;
+    border-bottom: 1px solid blue;
+}
+.side-i-i{
+    font-size: 40px;
+    margin-bottom: 5px
+}
+
+.comment-side-i{
+    font-size: 60px;
+    margin-bottom: 5px
+}
+.btn-read-cmnt{
+    background-color: white;
+    font-size: small;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    border-radius: 4px;
+}
+.btn-read-cmnt:focus{
+    outline: none;
+}
+
+.edit-form{
+    width: 500px;
+}
+.edit-form input[type=text],.edit-form input[type=email],.edit-form input[type=password]{
+    width: 100%;
+    background-color: #eeeeee;
+    border: none;
+    outline: none;
+    padding: 10px 8px 10px 8px;
+    border-radius: 5px;
+}
+.edit-form .field{
+    margin-bottom: 20px;
+}
+.edit-form em,.edit-form i{
+    font-size: small;
+    color: gray;
+}
+.edit-form h2,.edit-form ul{
+    font-size: small;
+}
+.edit-form .buttons{
+    display: flex;
+    justify-content: space-between;
+}
+.buttons input,.buttons .form{
+    background-color: lightskyblue;
+    border: none;
+    outline: none;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    width: 195px;
+    border-radius: 5px;
+}
+.buttons input:hover,.buttons .form:hover{
+    background-color: blue;
+    color: white;
+}
+
+.forgot-cont{
+    width: 500px;
+    margin: auto;
+    text-align: center;
+    padding-top: 50px;
+}
+.forgot-form{
+    background-color: white;
+    margin-top: 40px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.forgot-cont .title{
+    font-size: 35px;
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+
+}
+.forgot-form .innertitle{
+    color: blue;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.forgot-form input[type=email]{
+    min-width: 350px;
+    border: none;
+    outline: none;
+    background-color: #eeeeee;
+}
+
+.forgot-form input[type=submit]{
+    margin-top: 20px;
+    min-width: min-content;
+    border: none;
+    background-color: blue;
+    color: white;
+    padding: 10px 15px 10px 15px;
+    margin-bottom: 25px;
+}
+.forgot-form h2,.forgot-form ul{
+    font-size: small;
+}
+
+.user-search{
+    background-color: rgb(0, 0, 0, 0.0);
+    outline: none;
+    border: none;
+    color: white;
+    transform: translate(0,-2px);
+    display: none;
+    padding-left: 15px;
+}
+.div-user-search{
+    border-radius: 30px;
+}

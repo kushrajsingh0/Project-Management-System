@@ -1,0 +1,82 @@
+<%= form_with(model: project) do |form| %>
+  <% if project.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+        <% project.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control', :required => true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: 'form-control' %>
+  </div>
+
+  <%= form.hidden_field :employee, id: 'empl' %>
+
+  <div class='custom-checkbox'>
+    <p>Employee</p>
+    <div class='select'>
+          <div class='placeholder' onclick='showcheckbox()'><span>Select Employee</span><span id='custom-i'><i class="fas fa-caret-down"></i></span></div>
+          <% @users.each do |user| %>
+            <div class='custom-option'><input type='checkbox' id=<%= user.id %> onchange='checkbox(this.id)'><span><%= user.name %></span></div>
+          <% end %>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <%= form.label :startdate %>
+    <%= form.datetime_select :startdate, {}, class: 'm-1 p-1' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :enddate %>
+    <%= form.datetime_select :enddate, {}, class: 'm-1 p-1' %>
+  </div>
+
+  <div class="actions text-center mt-4">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+
+<script>
+
+  const checkboxex = document.getElementsByClassName('custom-option')
+  console.log(document.getElementById('empl').value)
+  for(var i=0;i<checkboxex.length;i++){
+    if(document.getElementById('empl').value.includes(checkboxex[i].firstChild.id))checkboxex[i].firstChild.checked=true
+  }
+
+ function showcheckbox(){
+  if(document.getElementsByClassName('select')[0].style.height==''||document.getElementsByClassName('select')[0].style.height=='35px'){
+    document.getElementsByClassName('select')[0].style.height='min-content';
+    document.getElementById('custom-i').innerHTML='<i class="fas fa-caret-up"></i>'
+  }
+  else {
+    document.getElementsByClassName('select')[0].style.height='35px'
+    document.getElementById('custom-i').innerHTML='<i class="fas fa-caret-down"></i>'
+  }
+ }
+
+ function checkbox(id){
+  if(document.getElementById(id).checked){
+    document.getElementById('empl').value+=(id+'--')
+  }
+  else{
+    if(document.getElementById('empl').value.includes(id)){
+      document.getElementById('empl').value = document.getElementById('empl').value.replace((id+'--'),'')
+    }
+  }
+ }
+</script>

@@ -1,0 +1,249 @@
+<div class='container user-proj'>
+<div class='sidebar-hidden'>
+    <div class='side-title'>
+        <div>My Team</div>
+        <i onclick='closeSideBar()' class='fas fa-times'></i>
+    </div>
+    <div class='side-body'>
+        <i class="fas fa-users side-i-i"></i>
+        <div id='taskNameSide'>Task : </div>
+    </div>
+    <p style='color:green'><%= current_user.name %>(You)</p>
+    <div class='sidebar-hidden1'></div>
+</div>
+<div class='sidebar-hidden-comment'>
+</div>
+
+
+
+<h3>Projects</h3>
+
+<% tasks_hash = {} %>
+
+<div style='display:none'>
+    <% @users.each do |user| %>
+        <% if user.id!=current_user.id %>
+            <div id='user-hidden-<%= user.id %>'><%= user.name %></div>
+        <% end %>
+    <% end %>
+</div>
+
+<% @tasks.each do |task| %>
+    <% if task.empl.include? current_user.id.to_s %>
+        <% if tasks_hash.has_key?(task.project_id) %>
+            <% tasks_hash[task.project_id].push(task) %>
+        <% else %>
+            <% tasks_hash[task.project_id] = [] %>
+            <% tasks_hash[task.project_id].push(task) %>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% @projects.each do |project| %>
+    <% if project.employee.include? current_user.id.to_s %>
+        <% thisProjEmps = project.employee %>
+        <div class='proj_user'>
+            <div class='user-proj-flex'><h5 class='search-content' id='project-search-<%= project.id %>'><%= project.name %></h5><p>Start Date - <%= project.startdate.strftime('%d-%m-%Y %I:%M %p') %></p></div>
+            <div class='user-proj-flex'><h6><%= project.description %></h6><p>Deadline - <%= project.enddate.strftime('%d-%m-%Y %I:%M %p') %></p></div>
+            <% @tasks.where(project_id: project.id).each do |taskThisProj| %>
+                <% thisProjEmps+=taskThisProj.empl %>
+            <% end %>
+            <div class='user-proj-flex'><span></span><button onclick="openSideBar('<%= thisProjEmps %>','<%= project.name %>','Project')"><i class="fas fa-users"></i>My Team</button></div>
+            <% if tasks_hash.has_key?(project.id) %>
+                <hr>
+                <h4>Tasks</h4>
+                <div class='grid-cont'>
+                    <% tasks_hash[project.id].each do |key, value| %>
+                        <div class='grid-item'>
+                            <div class='grid-item-flex'>
+                                <div>
+                                    <p class='user-task-name search-content' id='task-search-<%= key.id %>'><%= key.name %></p>
+                                    <p class='user-task-desc'><%= key.description %></p>
+                                </div>
+                                <div>
+                                    <select class='user-task-status' id=<%= key.id %> onchange='changeStatus(this.id,this.value)'>
+                                        <option <%= key.status=='not-started'?'selected':'' %> value='not-started'>Not Started</option>
+                                        <option <%= key.status=='in-progress'?'selected':'' %> value='in-progress'>In progress</option>
+                                        <option <%= key.status=='complete'?'selected':'' %> value='complete'>Complete</option>                            
+                                    </select>
+                                    <i class="fas fa-comment-dots user-task-status" id='comment--<%= key.id %>' onclick='showCommentBox(this.id)'></i>
+                                    <i class="fas fa-users user-task-status" onclick="openSideBar('<%= key.empl %>','<%= key.name %>','Task')"></i>
+                                </div>
+                            </div>
+                            <div class='d-flex align-items-center justify-content-between'>
+                                <div>
+                                    <p class='user-task-date'>Start Date - <%= key.start.strftime('%d-%m-%Y %I:%M %p') %></p>
+                                    <p class='user-task-date'>Deadline - <%= key.end.strftime('%d-%m-%Y %I:%M %p') %></p>
+                                </div>
+                                <button onclick="openCommentBar('<%= key.id %>')" class='btn-read-cmnt'>Read Comments</button>
+                            </div>
+                            <form id='comment--<%= key.id %>--box' class='div-textarea' action='/home/postComment' >
+                                <input type="hidden" value=<%= current_user.id %> name='user_id'>
+                                <input type="hidden" value=<%= key.id %> name='task_id'>
+                                <textarea name='commentText' class='task-textarea' placeholder='Enter your comment...'></textarea>
+                                <button type='submit'>Post</button>
+                            </form>
+                            <div class='sidebar-hidden-comment-1' id='sidebar-comment-<%= key.id %>'>
+                                <div class='side-title'>
+                                    <div>Comments</div>
+                                    <i onclick='closeSideBar()' class='fas fa-times'></i>
+                                </div>
+                                <div class='side-body'>
+                                    <i class="fa-brands fa-stack-exchange comment-side-i"></i>
+                                    <div id='taskNameSide-comment'>Task : <%= key.name %></div>
+                                </div>
+                                <div class='p-4'>
+                                <% Comment.where(task_id: key.id).each do |comment| %>
+                                    <div class='comment-each'>
+                                      <div class='d-flex align-items-center'>
+                                        <% if comment.user_id==current_user.id %>
+                                            <span class='userNameComment'>You</span>
+                                        <% else %>
+                                            <span class='userNameComment'><%= User.find(comment.user_id).name %></span>
+                                        <% end %>
+                                        <span class='dateComment'><%= comment.created_at.strftime('%-d %b %Y %I:%M %p') %></span>
+                                      </div>
+                                      <span class='commentx'><%= comment.commentText %></span>
+                                    </div>
+                                <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    <% else %>
+        <% if tasks_hash.has_key?(project.id) %>
+            <% thisProjEmps = project.employee %>
+            <div class='proj_user'>
+                <div class='user-proj-flex'><h5 class='search-content' id='project-search-<%= project.id %>'><%= project.name %></h5><p>Start Date - <%= project.startdate %></p></div>
+                <div class='user-proj-flex'><h6><%= project.description %></h6><p>Deadline - <%= project.enddate %></p></div>
+                <% @tasks.where(project_id: project.id).each do |taskThisProj| %>
+                    <% thisProjEmps+=taskThisProj.empl %>
+                <% end %>
+                <div class='user-proj-flex'><span></span><button onclick="openSideBar('<%= thisProjEmps %>','<%= project.name %>','Project')"><i class="fas fa-users"></i>My Team</button></div>
+                <hr>
+                <h4>Tasks</h4>
+                <div class='grid-cont'>
+                    <% tasks_hash[project.id].each do |key, value| %>
+                        <div class='grid-item'>
+                            <div class='grid-item-flex'>
+                                <div>
+                                    <p class='user-task-name search-content' id='task-search-<%= key.id %>'><%= key.name %></p>
+                                    <p class='user-task-desc'><%= key.description %></p>
+                                </div>
+                                <div>
+                                    <select class='user-task-status' id=<%= key.id %> onchange='changeStatus(this.id,this.value)'>
+                                        <option <%= key.status=='not-started'?'selected':'' %> value='not-started'>Not Started</option>
+                                        <option <%= key.status=='in-progress'?'selected':'' %> value='in-progress'>In progress</option>
+                                        <option <%= key.status=='complete'?'selected':'' %> value='complete'>Complete</option>                            
+                                    </select>
+                                    <i class="fas fa-comment-dots user-task-status" id='comment--<%= key.id %>' onclick='showCommentBox(this.id)'></i>
+                                    <i class="fas fa-users user-task-status" onclick="openSideBar('<%= key.empl %>','<%= key.name %>','Task')"></i>
+                                </div>
+                            </div>
+                            <div class='d-flex align-items-center justify-content-between'>
+                                <div>
+                                    <p class='user-task-date'>Start Date - <%= key.start.strftime('%d-%m-%Y %I:%M %p') %></p>
+                                    <p class='user-task-date'>Deadline - <%= key.end.strftime('%d-%m-%Y %I:%M %p') %></p>
+                                </div>
+                                <button onclick="openCommentBar('<%= key.id %>')" class='btn-read-cmnt'>Read Comments</button>
+                            </div>
+                            <form id='comment--<%= key.id %>--box' class='div-textarea' action='/home/postComment' >
+                                <input type="hidden" value=<%= current_user.id %> name='user_id'>
+                                <input type="hidden" value=<%= key.id %> name='task_id'>
+                                <textarea name='commentText' class='task-textarea' placeholder='Enter your comment...'></textarea>
+                                <button type='submit'>Post</button>
+                            </form>
+                            <div class='sidebar-hidden-comment-1' id='sidebar-comment-<%= key.id %>'>
+                                <div class='side-title'>
+                                    <div>Comments</div>
+                                    <i onclick='closeSideBar()' class='fas fa-times'></i>
+                                </div>
+                                <div class='side-body'>
+                                    <i class="fa-brands fa-stack-exchange comment-side-i"></i>
+                                    <div id='taskNameSide-comment'>Task : <%= key.name %></div>
+                                </div>
+                                <div class='p-4'>
+                                <% Comment.where(task_id: key.id).each do |comment| %>
+                                    <div class='comment-each'>
+                                      <div class='d-flex align-items-center'>
+                                      <% if comment.user_id==current_user.id %>
+                                            <span class='userNameComment'>You</span>
+                                        <% else %>
+                                            <span class='userNameComment'><%= User.find(comment.user_id).name %></span>
+                                        <% end %>
+                                        <span class='dateComment'><%= comment.created_at.strftime('%-d %b %Y %I:%M %p') %></span>
+                                      </div>
+                                      <span class='commentx'><%= comment.commentText %></span>
+                                    </div>
+                                <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>
+
+</div>
+
+<script>
+    document.getElementById('nav-top').style.position='fixed';
+    document.getElementById('nav-top').style.zIndex='1';
+    document.getElementsByClassName('alert-box')[0].style.paddingTop = '56px';
+    function changeStatus(id,value){
+        if(confirm("Are you sure to change the status to "+value)){
+            window.location.href = '/home/updateStatus/'+id+'/'+value;
+        }
+        else{
+            window.location.reload();
+        }
+    }
+    function showCommentBox(id){
+        const allTextAreas = document.getElementsByClassName('div-textarea')
+        for(var i=0;i<allTextAreas.length;i++){
+            if(allTextAreas[i].id!==(id+'--box'))
+            allTextAreas[i].style.display='none';
+        }
+        if(document.getElementById(id+'--box').style.display===''||document.getElementById(id+'--box').style.display==='none'){
+            document.getElementById(id+'--box').style.display='block';
+        }
+        else{
+            document.getElementById(id+'--box').style.display='none';
+        }
+    }
+    function openSideBar(users,taskName,type){
+        document.getElementsByClassName('sidebar-hidden1')[0].innerHTML="";
+        document.getElementById('taskNameSide').innerText=`${type} : ${taskName}`;
+        userArr = users.split('--')
+        userArr = userArr.filter((item, index) => userArr.indexOf(item) === index);
+        for(var i=0;i<userArr.length;i++){
+            if(userArr[i].length>0&&userArr[i]!=='<%= current_user.id %>'){
+                var userEach = document.createElement('p');
+                userEach.innerText = document.getElementById('user-hidden-'+userArr[i]).innerHTML;
+                console.log(userEach);
+                document.getElementsByClassName('sidebar-hidden1')[0].appendChild(userEach);
+            }
+        }
+        document.getElementsByClassName('sidebar-hidden-comment')[0].style.width = '0'
+        document.getElementsByClassName('sidebar-hidden')[0].style.width = '300px'
+    }
+    function closeSideBar(){
+        document.getElementsByClassName('sidebar-hidden')[0].style.width = '0'
+        document.getElementsByClassName('sidebar-hidden-comment')[0].style.width = '0'
+    }
+    function openCommentBar(id){
+        document.getElementsByClassName('sidebar-hidden')[0].style.width = '0'
+        document.getElementsByClassName('sidebar-hidden-comment')[0].innerHTML=document.getElementById('sidebar-comment-'+id).innerHTML;
+        document.getElementsByClassName('sidebar-hidden-comment')[0].style.width = '600px'
+    }
+    document.body.style.backgroundColor='none'
+    document.body.style.backgroundImage="url('/assets/bg.webp')"
+    document.body.style.backgroundSize= '100% 100%';
+    document.body.style.backgroundRepeat= 'no-repeat';
+    document.body.style.backgroundAttachment= 'fixed';
+</script>

@@ -1,0 +1,131 @@
+
+<div class="container">
+
+<%= link_to 'Back', projects_path, class: 'btn btn-secondary my-3' %>
+<div class="bg-white rounded p-4">
+  <div class="">
+    <div class='d-flex justify-content-between'>
+      <h2><%= @project.name %></h2>
+      <div>
+        <%= link_to 'Edit', edit_project_path(@project), class: 'btn btn-warning' %>
+        <%= link_to 'Destroy', @project, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' } %>
+        </div>
+    </div>
+
+    <div class="m-4 mb-5 p-4 rounded task-form">
+      <h6>Add task</h6>
+
+        <%= form_with(model: [@task.project, @task], html: { class: 'form-inline' }) do |f| %>
+          <% if @task.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+        
+              <ul>
+              <% @task.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+        
+          <%= f.hidden_field :status, value: 'not-started' %>
+          <div class="form-group w-100 mb-4">
+            <%= f.text_field :name, class: 'form-control', placeholder: 'Enter task name...' %>
+          </div>
+
+          <div class="form-group w-100 mb-4">
+            <%= f.text_area :description, class: 'form-control', placeholder: 'Enter Description...' %>
+          </div>
+
+
+          <%= f.hidden_field :empl, id:'empl' %>
+
+          <div class='custom-checkbox width-checkbox'>
+            <p>Employee</p>
+            <div class='select'>
+                  <div class='placeholder' onclick='showcheckbox()'><span>Select Employee</span><span id='custom-i'><i class="fas fa-caret-down"></i></span></div>
+                  <% @users.each do |user| %>
+                    <div class='custom-option'><input type='checkbox' id=<%= user.id %> onchange='checkbox(this.id)'><span><%= user.name %></span></div>
+                  <% end %>
+            </div>
+          </div>
+
+          <div class="form-group w-100 my-2">
+            <%= f.label :start %><br />
+            <%= f.datetime_select :start, {}, class: 'form-control mx-1' %>
+          </div>
+          <div class="form-group w-100 my-2">
+            <%= f.label :end %><br />
+            <%= f.datetime_select :end, {}, class: 'form-control mx-1' %>
+          </div>
+          <div class="form-group w-100 mt-2">
+            <%= f.submit class: 'btn btn-primary px-5' %>
+          </div>
+        <% end %>
+    </div>
+      <h4 class='pt-3'>Tasks</h4>
+      <% @project.tasks.each do |task| %>
+        <% if task.persisted? %>
+          <div class="card mb-3 card-zoom">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <span class="badge badge-<%= task.badge_color %> mb-3"><%= task.status %></span>
+                <div>
+                  <%= link_to 'Edit', edit_project_task_path(task.project, task), class: 'btn btn-light btn-sm' %>
+                  <%= link_to 'Delete', [task.project, task], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-dark btn-sm' %>
+                </div>
+              </div>
+              <h5 class='card-title mb-2'>
+                <span><%= task.name %></span>
+              </h5>
+              <p><%= task.description %></p>
+              <hr>
+              <h6 class='text-primary'>Comments</h6>
+              <% @comments.each do |comment| %>
+                <% if comment.task_id == task.id %>
+                  <div class='comment-card rounded my-3 p-2'>
+                    <div class='comment-flex'>
+                      <p>Posted by: <%= User.find(comment.user_id).name %></p>
+                      <p>Posted at: <%= comment.created_at.strftime('%-d %b %Y %I:%M %p') %></p>
+                    </div>
+                    <p class='bg-light p-2 m-1'><%= comment.commentText %></p>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+
+        <% end %>
+      <% end %>
+    
+  </div>
+</div>
+
+</div>
+
+
+<script>
+ function showcheckbox(){
+  if(document.getElementsByClassName('select')[0].style.height==''||document.getElementsByClassName('select')[0].style.height=='35px'){
+    document.getElementsByClassName('select')[0].style.height='min-content';
+    document.getElementById('custom-i').innerHTML='<i class="fas fa-caret-up"></i>'
+  }
+  else {
+    document.getElementsByClassName('select')[0].style.height='35px'
+    document.getElementById('custom-i').innerHTML='<i class="fas fa-caret-down"></i>'
+  }
+ }
+
+ function checkbox(id){
+  if(document.getElementById(id).checked){
+    document.getElementById('empl').value+=(id+'--')
+  }
+  else{
+    if(document.getElementById('empl').value.includes(id)){
+      document.getElementById('empl').value = document.getElementById('empl').value.replace((id+'--'),'')
+    }
+  }
+ }
+</script>
+
+--------------------------------------------------------------------------------------------------------------------------------

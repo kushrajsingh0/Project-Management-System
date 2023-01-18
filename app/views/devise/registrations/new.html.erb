@@ -1,0 +1,58 @@
+<div id="login-box">
+  <div class="left">
+    <h1>Sign up</h1>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <!--<%= render "devise/shared/error_messages", resource: resource %>-->
+    
+        <div class="field">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'user-signup' %>
+        </div>    
+
+        <div class="field">
+          <%= f.label :password %>
+          <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %><br>
+          <%= f.password_field :password, autocomplete: "new-password", class: 'user-signup' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'user-signup' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Name %><br />
+          <%= f.text_field :name, class: 'user-signup' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Phone_no %><br />
+          <%= f.text_field :phone, class: 'user-signup' %>
+        </div>
+
+          <div class="field">
+            <%= f.submit "Sign up", class: 'user-signup-submit' %>
+          </div>
+      <% end %>
+  </div>
+  
+  <div class="right">
+    <span class="loginwith">Sign in with<br />social network</span>
+    
+    <button class="social-signin facebook" onclick="window.location.href = 'https://www.facebook.com/';">Log in with facebook</button>
+    <button class="social-signin twitter" onclick="window.location.href = 'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoiZW4ifQ%3D%3D%22%7D';">Log in with Twitter</button>
+    <button class="social-signin google" onclick="window.location.href = 'https://accounts.google.com/v3/signin/identifier?dsh=S638230450%3A1672813289419479&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&rip=1&sacu=1&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&ifkv=AeAAQh5M0LL83KXG42oZkUYvn1elNvky-BRhtsYFDLL7SMv3BezIlWaGrTWR1bC3Si2dfaAATmpn1A';">Log in with Gmail</button>
+  </div>
+  <div class="or">OR</div>
+</div>
+<script>
+document.body.style.backgroundColor='none'
+    document.body.style.backgroundImage="url('/assets/bg.webp')"
+    document.body.style.backgroundSize= '100% 100%';
+    document.body.style.backgroundRepeat= 'no-repeat';
+    document.body.style.backgroundAttachment= 'fixed';
+</script>
+

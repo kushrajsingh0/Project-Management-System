@@ -1,0 +1,53 @@
+<% if session[:admin].nil? %>
+<% if user_signed_in? %>
+<script type="text/javascript">
+    window.location.href="/home/index"
+  </script>
+  <% else %>
+  <script type="text/javascript">
+    window.location.href="/users/sign_in"
+  </script>
+  <% end %>
+<% end %>
+
+<div class='container mt-5'>
+<div class="card">
+  <div class="card-body">
+    <h2 class='card-title d-flex justify-content-between mb-4'>
+      <span>Projects</span>
+      <%= link_to 'New Project', new_project_path, class: 'btn btn-primary' %>
+    </h2>
+
+    <% @projects.each do |project| %>
+      <%= link_to project, class: 'text-decoration-none' do %>
+        <div class="card card-zoom project-card mb-3">
+          <div class="card-body">
+            <div class="mb-3">
+              <span class="badge badge-<%= project.badge_color %>">
+                <%= project.status %>
+              </span>
+              <span class='text-secondary'>
+                <small>
+                  <%= project.percent_complete %>% complete
+                  (<%= project.total_complete %>/<%= project.total_tasks %> tasks)
+                </small>
+              </span>
+            </div>
+            <h5 class='card-title text-dark search-content' id='project-search-<%= project.id %>' style='width:max-content'><b><%= project.name %></b></h5>
+            <p class='text-secondary'><%= project.description %></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+</div>
+<script>
+    document.body.style.backgroundColor='none'
+    document.body.style.backgroundImage="url('/assets/bg4.jpg')"
+    document.body.style.backgroundSize= '100% 100%';
+    document.body.style.backgroundRepeat= 'no-repeat';
+    document.body.style.backgroundAttachment= 'fixed';
+    
+        
+</script>
